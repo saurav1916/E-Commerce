@@ -39,7 +39,7 @@
 
         <!-- Left -->
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
+          <li class="nav-item ">
             <a class="nav-link waves-effect" href="/home/">Home
               <span class="sr-only">(current)</span>
             </a>
@@ -57,6 +57,7 @@
             </a>
           </li>  -->
           
+          <a href="/logout/" type="button" class="btn btn-dark">Logout</a>
         </ul>
 
       </div>
@@ -285,9 +286,9 @@
             <li class="list-group-item d-flex justify-content-between bg-light">
               <div class="text-success">
                 <h6 class="my-0">Promo code</h6>
-                <small>EXAMPLECODE</small>
+                <small>{{promocode}}</small>
               </div>
-              <span class="text-success"></span>
+              <span class="text-success">-{{discount}}</span>
             </li>
             <li class="list-group-item d-flex justify-content-between">
               <span>Total</span>
@@ -298,11 +299,12 @@
           <!-- Cart -->
           
           <!-- Promo code -->
-          <form class="card p-2">
+          <form method="POST" class="card p-2" action="/cart/">
+            {% csrf_token %}
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Promo code" aria-label="Recipient's username" aria-describedby="basic-addon2">
+              <input type="text" name="promocode" class="form-control" placeholder="Promo code" aria-label="Recipient's username" aria-describedby="basic-addon2">
               <div class="input-group-append">
-                <button class="btn btn-secondary btn-md waves-effect m-0" type="button">Redeem</button>
+                <button class="btn btn-secondary btn-md waves-effect m-0" type="submit">Redeem</button>
               </div>
             </div>
           </form>

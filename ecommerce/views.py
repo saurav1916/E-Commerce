@@ -1,9 +1,9 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate,login as auth_login
+from django.contrib.auth import authenticate,login as auth_login,logout as auth_logout
 from django.http import HttpResponseRedirect
 from django.views.generic import ListView,DetailView
-from .models import Product,Cart
+from .models import Product,Cart,Coupon
 # Create your views here.
 
 def signup(request):
@@ -47,12 +47,22 @@ class productdetail(DetailView):
 def cart(request):
     cart=Cart.objects.all().filter(user=request.user)
     count=Cart.objects.all().filter(user=request.user).count()
+
+    discount=0
+    promocode=""
+    if request.method=="POST":
+        promocode=request.POST['promocode']
+        discount_coupon=Coupon.objects.get(couponcode=promocode)
+        discount=discount_coupon.coupon_price
+        
     
     total=0
     for i in cart:
         t=i.products.price
-        total=int(t)+int(total)
-    dict={"cart":cart,"total":total,"count":count}      
+        total=(int(t)+int(total))
+    total=int(total)-int(discount)
+
+    dict={"cart":cart,"total":total,"count":count,"discount":discount,"promocode":promocode}      
     return render(request,'checkout.html',dict)
     
 def add_to_Cart(request):
@@ -66,3 +76,7 @@ def removeitem(request):
     id=request.GET['id']
     Cart.objects.all().filter(user=request.user,id=id).delete()
     return HttpResponseRedirect("/cart/")
+
+def logout(request):
+    auth_logout(request)
+    return redirect('/login')

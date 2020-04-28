@@ -32,11 +32,14 @@ class Cart(models.Model):
     quantity=models.CharField(max_length=20,default=0)
 
 
-    def __str__(self):
-        return f'{self.products.name} of {self.user}'
     
 
 
+class Coupon(models.Model):
+    couponcode=models.CharField(max_length=5)
+    coupon_price=models.CharField(max_length=50)
 
-class Order(models.Model):
-    user=models.ForeignKey(User,on_delete=models.CASCADE)
+
+
+    def __str__(self):
+        return self.coupon_price

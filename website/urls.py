@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from ecommerce.views import home,productdetail,cart,signup,login,add_to_Cart,removeitem
+from ecommerce.views import home,productdetail,cart,signup,login,add_to_Cart,removeitem,logout
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -24,9 +24,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('signup/',signup),
     path('login/',login),
+    path('logout/',logout),
     path('home/',home.as_view()),
     path('productdetail/<pk>/',productdetail.as_view()),
     path('cart/',cart),
     path('addtocart/',add_to_Cart),
     path('removeitem/',removeitem)
+  
 ] + static(settings.MEDIA_URL ,document_root=settings.MEDIA_ROOT)
