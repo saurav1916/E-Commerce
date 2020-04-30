@@ -34,10 +34,18 @@ def login(request):
     return render(request,"login.html")
         
 
+def logout(request):
+    auth_logout(request)
+    return redirect('/login')
+
 
 class home(ListView):
     model=Product
     template_name='home.html'
+
+   
+
+
 
 class productdetail(DetailView):
     model=Product
@@ -58,17 +66,30 @@ def cart(request):
     
     total=0
     for i in cart:
+        quantity=i.quantity
         t=i.products.price
-        total=(int(t)+int(total))
+        total=(int(t)*int(quantity))+int(total)
     total=int(total)-int(discount)
 
     dict={"cart":cart,"total":total,"count":count,"discount":discount,"promocode":promocode}      
     return render(request,'checkout.html',dict)
-    
+
+
 def add_to_Cart(request):
     id=request.GET['id']
+    inc_quantity=1
+
+    if request.method=="POST":
+        inc_quantity=request.POST["quantity"]
+
     products=Product.objects.get(id=id)
-    Cart.objects.get_or_create(products=products,user=request.user,quantity=1)
+    presentitem=Cart.objects.filter(user=request.user,products=products)
+    if presentitem.exists():
+        abc=presentitem[0]
+        abc.quantity += int(inc_quantity)
+        abc.save()
+    else:    
+        Cart.objects.create(products=products,user=request.user,quantity=inc_quantity)
     return HttpResponseRedirect('/cart/')
 
 
@@ -77,6 +98,4 @@ def removeitem(request):
     Cart.objects.all().filter(user=request.user,id=id).delete()
     return HttpResponseRedirect("/cart/")
 
-def logout(request):
-    auth_logout(request)
-    return redirect('/login')
+

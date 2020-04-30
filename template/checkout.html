@@ -58,6 +58,7 @@
           </li>  -->
           
           <a href="/logout/" type="button" class="btn btn-dark">Logout</a>
+          <a type="button" class="btn btn-info">{{user}}</a>
         </ul>
 
       </div>
@@ -276,8 +277,11 @@
               <div>
                 <h6 class="my-0">{{i.products}}</h6>
                 <small class="text-muted">{{i.products.description}}</small>
+                <br>
+                <small class="text-muted">Quantity:{{i.quantity}}</small>
               </div>
               <span class="text-muted">{{i.products.price}}</span>
+          
             </li>
             <a href="/removeitem?id={{i.id}}" type='button' class='btn btn-danger'>Remove Item</a>
             {% endfor %}

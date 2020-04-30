@@ -29,7 +29,7 @@ class Product(models.Model):
 class Cart(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)    
     products=models.ForeignKey(Product,on_delete=models.CASCADE)
-    quantity=models.CharField(max_length=20,default=0)
+    quantity=models.IntegerField(default=0)
 
 
     
@@ -43,3 +43,11 @@ class Coupon(models.Model):
 
     def __str__(self):
         return self.coupon_price
+
+
+
+class Order(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE)  
+    orderproducts=models.ManyToManyField(Cart)
+    ordered=models.BooleanField(default=False)
+          
