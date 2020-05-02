@@ -45,6 +45,13 @@
             </a>
           </li>
          
+          <li class="nav-item">
+            <a class="nav-link waves-effect" href="/ordersummary/"
+              target="">Orders</a>
+          </li>
+
+
+
         </ul>
 
         <!-- Right -->
@@ -283,7 +290,18 @@
               <span class="text-muted">{{i.products.price}}</span>
           
             </li>
-            <a href="/removeitem?id={{i.id}}" type='button' class='btn btn-danger'>Remove Item</a>
+            
+            <form method="POST" class="d-flex justify-content-left" action="/updatequantity/?id={{i.id}}">
+              
+              {% csrf_token %}
+              <input type="number" name="updatedquantity" value="{{i.quantity}}" aria-label="Search" class="form-control" style="width: 100px">
+              <button class="btn btn-light btn-md my-0 p"  type="submit">Change Quantity</button>
+
+            </form> 
+            
+            <a href="/removeitem?id={{i.id}}" type='button' class='btn btn-danger'>Remove Item From Cart</a>
+            <a href="/order?id={{i.products.id}}&quantity={{i.quantity}}" type="button" class="btn btn-warning">Order Now</a>
+
             {% endfor %}
             
             
@@ -292,14 +310,14 @@
                 <h6 class="my-0">Promo code</h6>
                 <small>{{promocode}}</small>
               </div>
-              <span class="text-success">-{{discount}}</span>
+              <span class="text-success">INR-{{discount}}</span>
             </li>
             <li class="list-group-item d-flex justify-content-between">
               <span>Total</span>
-              <strong>{{total}}</strong>
+              <strong>INR-{{total}}</strong>
             </li>
           </ul>
-          
+        
           <!-- Cart -->
           
           <!-- Promo code -->
@@ -313,7 +331,7 @@
             </div>
           </form>
           <!-- Promo code -->
-
+          
         </div>
         <!--Grid column-->
 

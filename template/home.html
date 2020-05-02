@@ -78,6 +78,11 @@
             <a class="nav-link waves-effect" href="/cart/"
               target="">Cart</a>
           </li>
+
+          <li class="nav-item">
+            <a class="nav-link waves-effect" href="/ordersummary/"
+              target="">Orders</a>
+          </li>
           
         </ul>
 
@@ -100,6 +105,18 @@
     </div>
   </nav>
   <!-- Navbar -->
+  <div class="mt-5 pt-4">
+    <div class="mt-2 pt-1">
+  {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-primary" role="alert">
+        {{message}}
+      </div>    
+      {% endfor %}
+  
+  {% endif %}
+</div>
+</div>
 
   <!--Carousel Wrapper-->
   <div id="carousel-example-1z" class="carousel slide carousel-fade pt-4" data-ride="carousel">

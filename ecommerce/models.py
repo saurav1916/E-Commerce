@@ -16,7 +16,7 @@ class Category(models.Model):
 class Product(models.Model):
     name=models.CharField(max_length=20)
     category=models.ForeignKey(Category, on_delete=models.CASCADE)
-    price=models.CharField(max_length=20)
+    price=models.FloatField()
     product_image=models.ImageField()
     description=models.CharField(max_length=100)
     oldprice=models.CharField(max_length=10)
@@ -48,6 +48,13 @@ class Coupon(models.Model):
 
 class Order(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)  
-    orderproducts=models.ManyToManyField(Cart)
-    ordered=models.BooleanField(default=False)
-          
+    orderproducts=models.ForeignKey(Product,on_delete=models.CASCADE)
+    quantity=models.IntegerField(default=0)
+    date=models.DateTimeField()         
+
+
+
+    def itemtotal(self):
+        return self.quantity * self.orderproducts.price        
+
+    

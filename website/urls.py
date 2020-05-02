@@ -15,10 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from ecommerce.views import home,productdetail,cart,signup,login,add_to_Cart,removeitem,logout
+from ecommerce.views import home,productdetail,cart,signup,login,add_to_Cart,removeitem,logout,update_quantity,order,ordersummary,removeorder,increase_order_quantity,decrease_order_quantity
 from django.conf import settings
 from django.conf.urls.static import static
-
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,6 +28,12 @@ urlpatterns = [
     path('productdetail/<pk>/',productdetail.as_view()),
     path('cart/',cart),
     path('addtocart/',add_to_Cart),
-    path('removeitem/',removeitem)
+    path('removeitem/',removeitem),
+    path('updatequantity/',update_quantity),
+    path('order/',order),
+    path('ordersummary/',ordersummary),
+    path('removeorder/',removeorder),
+    path("increaseorderquantity/",increase_order_quantity),
+    path("decreaseorderquantity/",decrease_order_quantity)
   
 ] + static(settings.MEDIA_URL ,document_root=settings.MEDIA_ROOT)
