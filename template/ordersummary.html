@@ -53,7 +53,7 @@
     <div class="container">
 
       <!-- Brand -->
-      <a class="navbar-brand waves-effect" href="https://mdbootstrap.com/docs/jquery/" target="_blank">
+      <a class="navbar-brand waves-effect" target="_blank">
         <strong class="blue-text">E-Commerce</strong>
       </a>
 
@@ -135,20 +135,20 @@
             <tr>
               <th scope="row">{{forloop.counter}}</th>
               <td>{{i.orderproducts}}</td>
-              <td>{{i.orderproducts.price}}</td>
+              <td><i class="fas fa-rupee-sign"></i>{{i.orderproducts.price}}</td>
               <td>
                 <a href="/decreaseorderquantity?id={{i.id}}"><i class="fas fa-minus mr-2"></i></a>
                 {{i.quantity}}
                <a href="/increaseorderquantity?id={{i.id}}"> <i class="fas fa-plus ml-2"></i></a>
               </td>
               <td>{{i.date}}</td>
-              <td>{{i.itemtotal}}</td>
-              <td><a href="/removeorder?id={{i.id}}" class="btn btn-danger" type="button">Cancel Order</a> </td>
+              <td><i class="fas fa-rupee-sign"></i>{{i.itemtotal}}</td>
+              <td><a href="/removeorder?id={{i.id}}"><i class="fas fa-trash"></i></a> </td>
             </tr>
             {% endfor %}
             <tr>
               <td colspan="5"><b>Order Total</b></td>
-             <td><b>{{total}}</b> </td>
+             <td><b><i class="fas fa-rupee-sign"></i>{{total}}</b> </td>
              <td></td>
             </tr>
     

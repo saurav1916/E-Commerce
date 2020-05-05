@@ -47,9 +47,6 @@ class home(ListView):
     template_name='home.html'
 
    
-
-
-
 class productdetail(DetailView):
     model=Product
     template_name='product.html'
@@ -66,7 +63,6 @@ def cart(request):
         discount_coupon=Coupon.objects.get(couponcode=promocode)
         discount=discount_coupon.coupon_price
         
-    
     total=0
     for i in cart:
         quantity=i.quantity
@@ -86,7 +82,6 @@ def add_to_Cart(request):
     if request.method=="POST":
         inc_quantity=request.POST["quantity"]
 
-    
     presentitem=Cart.objects.filter(user=request.user,products=product)
     if presentitem.exists():
         abc=presentitem[0]
@@ -115,7 +110,6 @@ def update_quantity(request):
     else:    
         Cart.objects.all().filter(user=request.user,id=id).update(quantity=updated_quantity)
     return HttpResponseRedirect("/cart/")
-
 
 
 def order(request):
@@ -160,6 +154,7 @@ def increase_order_quantity(request):
     abc.save()
     messages.info(request,"Order Item Quantity increased")
     return HttpResponseRedirect("/ordersummary/")
+
 
 def decrease_order_quantity(request):
     order_id=request.GET['id']
