@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django_countries.fields import CountryField
 # Create your models here.
 
 
@@ -51,10 +52,24 @@ class Order(models.Model):
     orderproducts=models.ForeignKey(Product,on_delete=models.CASCADE)
     quantity=models.IntegerField(default=0)
     date=models.DateTimeField()         
+    orderaddress=models.ForeignKey('BillingAddress',on_delete=models.SET_NULL,null=True,blank=True)
+    orderstatus=models.BooleanField(default=False)
 
 
 
     def itemtotal(self):
         return self.quantity * self.orderproducts.price        
 
-    
+class BillingAddress(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    house_address=models.CharField(max_length=50)
+    area_address=models.CharField(max_length=50)
+    mobile_number=models.IntegerField()
+    country=CountryField(blank_label="Select Country")
+    zipcode=models.IntegerField()
+    payment=models.CharField(max_length=10)
+
+
+
+    def __str__(self):
+        return self.house_address

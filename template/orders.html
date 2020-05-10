@@ -100,68 +100,59 @@
     </div>
   </nav>
 
-<div class="mt-5 pt-4">
-<div class="mt-2 pt-1">
-  {% if messages %}
-    {% for i in messages %}
-  <div class="alert alert-success" role="alert">
-    {{i}}
+  <div class="mt-5 pt-4">
+    <div class="mt-2 pt-1">
+
+   <h2>ORDERS PLACED</h2> 
+
+
+   </div>
+   </div>
+
+   <div class="table-responsive">
+    <!--Table-->
+    <table class="table table-striped">
+  
+      <!--Table head-->
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Product</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Date</th>
+          <th>Total</th>
+          <th>Address</th>
+        </tr>
+      </thead>
+      <!--Table head-->
+  
+      <!--Table body-->
+      <tbody>
+          {% for i in ordersplaced %}
+        <tr>
+          <th scope="row">{{forloop.counter}}</th>
+          <td>{{i.orderproducts.name}}
+              <br>
+              <img src='{{MEDIA_URL}}{{i.orderproducts.product_image}}' height="100" width="100">
+          </td>
+          <td>{{i.orderproducts.price}}</td>
+          <td>{{i.quantity}} </td>
+          <td>{{i.date}}</td>
+          <td>{{i.itemtotal}}</td>
+          <td>#{{i.orderaddress.house_address}},
+              <br>
+              {{i.orderaddress.area_address}},
+              <br>
+              {{i.orderaddress.country}},{{i.orderaddress.zipcode}},
+              <br>
+              {{i.orderaddress.mobile_number}}
+          </td>
+        </tr>
+        {% endfor %}
+        
+      </tbody>
+      <!--Table body-->
+    </table>
+    <!--Table-->
   </div>
-    {% endfor %}
-  {% endif %}
-</div>
-</div>
-  
-  
-
-
-    <div class="table-responsive text-nowrap">
-      <h2>Order Summary</h2>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Product </th>
-              <th scope="col">Price</th>
-              <th scope="col">Quantity</th>
-              <th scope="col">Date</th>
-              <th scope="col">Total</th>
-              <th scope="col">Cancel</th>
-              
-            </tr>
-          </thead>
-          <tbody>
-            {% for i in orders %}
-            <tr>
-              <th scope="row">{{forloop.counter}}</th>
-              <td>{{i.orderproducts}}</td>
-              <td><i class="fas fa-rupee-sign"></i>{{i.orderproducts.price}}</td>
-              <td>
-                <a href="/decreaseorderquantity?id={{i.id}}"><i class="fas fa-minus mr-2"></i></a>
-                {{i.quantity}}
-               <a href="/increaseorderquantity?id={{i.id}}"> <i class="fas fa-plus ml-2"></i></a>
-              </td>
-              <td>{{i.date}}</td>
-              <td><i class="fas fa-rupee-sign"></i>{{i.itemtotal}}</td>
-              <td><a href="/removeorder?id={{i.id}}"><i class="fas fa-trash"></i></a> </td>
-            </tr>
-            {% endfor %}
-            <tr>
-              <td colspan="5"><b>Order Total</b></td>
-             <td><b><i class="fas fa-rupee-sign"></i>{{total}}</b> </td>
-             <td></td>
-            </tr>
-    
-
-          </tbody>
-          
-        </table>
-                 
-        <a href="/home/" type="button" class="btn blue-gradient">Continue Shopping</a>
-        <a href="/checkout/" type="button" class="btn aqua-gradient">Proceed To Checkout</a>
-
-            
-      </div>
-
-</div>
-

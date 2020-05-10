@@ -5,8 +5,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login as auth_login,logout as auth_logout
 from django.http import HttpResponseRedirect
 from django.views.generic import ListView,DetailView
-from .models import Product,Cart,Coupon,Order
-
+from .models import Product,Cart,Coupon,Order,BillingAddress
+from .forms import CheckoutForm
 # Create your views here.
 
 def signup(request):
@@ -71,7 +71,7 @@ def cart(request):
     total=int(total)-int(discount)
 
     dict={"cart":cart,"total":total,"count":count,"discount":discount,"promocode":promocode}      
-    return render(request,'checkout.html',dict)
+    return render(request,'cart.html',dict)
 
 
 def add_to_Cart(request):
@@ -118,7 +118,7 @@ def order(request):
     order_date=timezone.now()
     order_quantity=request.GET['quantity']
 
-    presentitem=Order.objects.all().filter(user=request.user,orderproducts=order_product)
+    presentitem=Order.objects.all().filter(user=request.user,orderproducts=order_product,orderstatus=False)
     if presentitem.exists():
         abc=presentitem[0]
         abc.quantity += int(order_quantity)
@@ -131,7 +131,7 @@ def order(request):
 
 
 def ordersummary(request):
-    orders=Order.objects.all().filter(user=request.user)
+    orders=Order.objects.all().filter(user=request.user,orderstatus=False)
 
     total=0
     for i in orders:
@@ -163,3 +163,46 @@ def decrease_order_quantity(request):
     abc.save()
     messages.info(request,"Order Item Quantity Decreased")
     return HttpResponseRedirect("/ordersummary/")
+
+
+def checkout(request):
+    userorder= Order.objects.filter(user=request.user,orderstatus=False).all()
+    if userorder.exists():
+        form=CheckoutForm()
+        if request.method=="POST":
+            form=CheckoutForm(request.POST)
+            if form.is_valid():
+                print("hello1")
+                obj=BillingAddress()
+                obj.user=request.user
+                obj.house_address=form.cleaned_data['house_address']
+                obj.area_address=form.cleaned_data['area_address']
+                obj.mobile_number=form.cleaned_data['mobile_number']
+                obj.country=form.cleaned_data['country']
+                obj.zipcode=form.cleaned_data['zipcode']
+                obj.payment=form.cleaned_data['payment']
+                obj.save()
+
+                userorder= Order.objects.filter(user=request.user,orderstatus=False).all()
+                for i in userorder:
+                    i.orderaddress=obj
+                    i.orderstatus=True
+                    i.save()
+
+                return HttpResponseRedirect('/placedorders/')
+
+            else:
+                print(form.errors)
+        return render(request,"checkout.html",{"form":form})
+        
+    else:
+        messages.info(request,"No Active Orders")
+        return HttpResponseRedirect('/ordersummary/')    
+
+         
+
+
+def placedorders(request):
+    orders_placed=Order.objects.all().filter(user=request.user,orderstatus=True)
+
+    return render(request,'orders.html',{"ordersplaced":orders_placed})

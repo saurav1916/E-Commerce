@@ -1,5 +1,4 @@
 {% load static %}
-{% load crispy_forms_tags %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -73,108 +72,94 @@
 
     </div>
   </nav>
+  <!-- Navbar -->
 
-  
-  <main class="mt-5 pt-4">
+  <!--Main layout-->
+  <main class="mt-5 pt-5">
     <div class="container wow fadeIn">
 
-      <!-- Heading -->
-      <h2 class="my-5 h2 text-center">Checkout form</h2>
+      
 
-      <!--Grid row-->
-      <div class="row">
+    
+        
 
         <!--Grid column-->
-        <div class="col-md-8 mb-4">
+        <div class="col-md-12 mb-4">
 
-          <!--Card-->
-          <div class="card">
+          <!-- Heading -->
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">Your cart</span>
+            <span class="badge badge-secondary badge-pill">{{count}}</span>
+          </h4>
+        {% for i in cart %}
+          
+          <!-- Cart -->
+          <ul class="list-group mb-3 z-depth-1">
+            <li class="list-group-item d-flex justify-content-between lh-condensed">
+              <div>
+                <h6 class="my-0">{{i.products}}</h6>
+                <small class="text-muted">{{i.products.description}}</small>
+                <br>
+                <small class="text-muted">Quantity:{{i.quantity}}</small>
+              </div>
+              <span class="text-muted">{{i.products.price}}</span>
+          
+            </li>
             
-            <!--Card content-->
-            <form class="card-body" method="POST" action="/checkout/">
-              {% csrf_token %}
-
-              <!--address-->
-              <div class="md-form mb-5">
-               {{form.house_address}}
-                <label for="House Address" class="">House Address</label>
-              </div>
-
-              <!--address-2-->
-              <div class="md-form mb-5">
-                {{form.area_address}}
-                <label for="Area" class="">Area</label>
-              </div>
-
-              <!--Grid row-->
-              <div class="row">
-
-                <!--Grid column-->
-                <div class="col-lg-4 col-md-12 mb-4">
-                  
-                  <label for="country">Country</label>
-                  {{form.country}}
-                
-                </div>
-                <!--Grid column-->
-
-                
-
-                <!--Grid column-->
-                <div class="col-lg-4 col-md-6 mb-4">
-
-                  <label for="zip">Zip</label>
-                  {{form.zipcode}}
-                  <div class="invalid-feedback">
-                    Zip code required.
-                  </div>
-
-                </div>
-                <!--Grid column-->
-
-              </div>
-              <!--Grid row-->
-
-              <div class="col-md-6 mb-2">
-                <label for="Mobile Number">Mobile Number</label>
-                {{form.mobile_number}}
-                <div class="invalid-feedback">
-                  Mobile Number
-                </div>
-              </div>
-
-
+            <form method="POST" class="d-flex justify-content-left" action="/updatequantity/?id={{i.id}}">
               
-              <hr>
-              {% for i,j in form.fields.payment.choices %}
-              <div class="d-block my-3">
-                <div class="custom-control custom-radio">
-                  <input id="{{j}}" name="payment" value="{{i}}" type="radio" class="custom-control-input" required>
-                  <label class="custom-control-label" for="{{j}}">{{j}}</label>
-                </div>
+              {% csrf_token %}
+              <input type="number" name="updatedquantity" value="{{i.quantity}}" aria-label="Search" class="form-control" style="width: 100px">
+              <button class="btn btn-light btn-md my-0 p"  type="submit">Change Quantity</button>
+
+            </form> 
+
+            <a href="/removeitem?id={{i.id}}" type='button' class='btn btn-danger'>Remove Item From Cart</a>
+            <a href="/order?id={{i.products.id}}&quantity={{i.quantity}}" type="button" class="btn purple-gradient">Order Now</a>
+
+            {% endfor %}
+            
+            
+            <li class="list-group-item d-flex justify-content-between bg-light">
+              <div class="text-success">
+                <h6 class="my-0">Promo code</h6>
+                <small>{{promocode}}</small>
               </div>
-              {% endfor %}
-              <hr class="mb-4">
-              <button  class="btn btn-default btn-lg btn-block" type="submit">Place Order</button>
-
-            </form>
-
-          </div>
-          <!--/.Card-->
-
+              <span class="text-success">INR-{{discount}}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Total</span>
+              <strong>INR-{{total}}</strong>
+            </li>
+          </ul>
+        
+          <!-- Cart -->
+          
+          <!-- Promo code -->
+          <form method="POST" class="card p-2" action="/cart/">
+            {% csrf_token %}
+            <div class="input-group">
+              <input type="text" name="promocode" class="form-control" placeholder="Promo code" aria-label="Recipient's username" aria-describedby="basic-addon2">
+              <div class="input-group-append">
+                <button class="btn btn-secondary btn-md waves-effect m-0" type="submit">Redeem</button>
+              </div>
+            </div>
+          </form>
+          <!-- Promo code -->
+          
         </div>
         <!--Grid column-->
 
-    
-       
+      </div>
+      <!--Grid row-->
 
+    </div>
+  </main>
+  <!--Main layout-->
 
-          
+ 
 
-
-  
-
-   <!-- SCRIPTS -->
+  <!-- SCRIPTS -->
   <!-- JQuery -->
   <script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
   <!-- Bootstrap tooltips -->

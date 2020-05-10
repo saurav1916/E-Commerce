@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from ecommerce.views import home,productdetail,cart,signup,login,add_to_Cart,removeitem,logout,update_quantity,order,ordersummary,removeorder,increase_order_quantity,decrease_order_quantity
+from ecommerce.views import home,productdetail,cart,signup,login,add_to_Cart,removeitem,logout,update_quantity,order,ordersummary,removeorder,increase_order_quantity,decrease_order_quantity,checkout,placedorders
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -34,6 +34,9 @@ urlpatterns = [
     path('ordersummary/',ordersummary),
     path('removeorder/',removeorder),
     path("increaseorderquantity/",increase_order_quantity),
-    path("decreaseorderquantity/",decrease_order_quantity)
+    path("decreaseorderquantity/",decrease_order_quantity),
+    path("checkout/",checkout),
+    path('placedorders/',placedorders)
+
   
 ] + static(settings.MEDIA_URL ,document_root=settings.MEDIA_ROOT)
