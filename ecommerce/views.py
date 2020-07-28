@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect
 from django.views.generic import ListView,DetailView
 from .models import Product,Cart,Coupon,Order,BillingAddress
 from .forms import CheckoutForm
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def signup(request):
@@ -45,6 +46,14 @@ def logout(request):
 class home(ListView):
     model=Product
     template_name='home.html'
+    paginate_by=1
+
+    def get_context_data(self):
+        context=super().get_context_data()
+        if self.request.user.is_authenticated:
+            context['cart_count']=Cart.objects.all().filter(user=self.request.user).count()
+        return context
+
 
    
 class productdetail(DetailView):
@@ -132,12 +141,14 @@ def order(request):
 
 def ordersummary(request):
     orders=Order.objects.all().filter(user=request.user,orderstatus=False)
+    cart_count=Cart.objects.all().filter(user=request.user).count()
 
     total=0
     for i in orders:
         total += i.itemtotal()
       
-    context={"orders":orders,"total":total}
+    context={"orders":orders,"total":total,
+    "cart_count":cart_count}
     return render(request,"ordersummary.html",context)
 
 
