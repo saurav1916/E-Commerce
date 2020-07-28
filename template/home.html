@@ -73,18 +73,32 @@
               <span class="sr-only">(current)</span>
             </a>
           </li>
-          
+          {% if request.user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link waves-effect" href="/ordersummary/"
               target="">Orders</a>
           </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link waves-effect" href="/login/"
+              target="">Orders</a>
+          </li>
+          {% endif %}
 
+          {% if request.user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link waves-effect" href="/cart/"
               target="">Cart <i class="fas fa-shopping-cart"></i>
               <span class="badge badge-danger">{{cart_count}}</span></a>
-              
           </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link waves-effect" href="/login/"
+              target="">Cart <i class="fas fa-shopping-cart"></i>
+              <span class="badge badge-danger">{{cart_count}}</span></a>
+          </li>
+          {% endif %}
+
         
         </ul>
 
@@ -221,8 +235,11 @@
                 <h4 class="font-weight-bold blue-text">
                   <strong>{{i.price}}</strong>
                 </h4>
-    
+            {% if request.user.is_authenticated %}
             <a href ="/addtocart?id={{i.id}} " type='button' class='btn btn-success'>Add to Cart <i class="fas fa-shopping-cart ml-1"></i></a>
+            {% else %}
+            <a href ="/login/ " type='button' class='btn btn-success'>Add to Cart <i class="fas fa-shopping-cart ml-1"></i></a>
+            {% endif %}
               </div>
               <!--Card content-->
 
@@ -340,7 +357,7 @@
         </ul>
       </nav>
       <!--Pagination-->
-      {{page_obj.number}} of {{page_obj.paginator.num_pages}}
+     Page {{page_obj.number}} of {{page_obj.paginator.num_pages}}
 
 
 
